@@ -9,33 +9,28 @@ var app=angular.module('myApp', []);
 app.controller('Ctrl', function($scope, $http) {
 	  $http.get("http://localhost:8080/persns").then(function (response) {
 	      $scope.myData = response.data;
-	      console.log(response)
 	  });
 	});
 
-app.directive('barsChart', function ($compile) {
+app.directive('barsChart', function ($parse,$timeout,$compile) {
   var directiveDefinitionObject = {
       restrict: 'E',
       replace: false,
       scope: {data: '=chartData'},
       link: function (scope, element, attrs) {
-    	scope.data =[{"id":1,"firstName":"Mantu","lastName":"Singh","age":25},{"id":2,"firstName":"Rishu","lastName":"Singh","age":10},{"id":3,"firstName":"Rakesh","lastName":"Singh","age":15},{"id":4,"firstName":"Subhash","lastName":"Singh","age":30},{"id":5,"firstName":"Amit","lastName":"Singh","age":20},{"id":6,"firstName":"Akash","lastName":"Singh","age":30},{"id":7,"firstName":"Rahul","lastName":"Singh","age":18},{"id":8,"firstName":"Vikash","lastName":"Singh","age":25}];
-        var chart = d3.select(element[0]);
-         chart.append("div").attr("class", "chart")
-          .selectAll('div')
-          .data(scope.data).enter().append("div")
-          .transition().ease("elastic")
-          .style("width", function(d) { return d.age + "%"; })
-          .text(function(d) { return d.firstName; });
+    	$timeout(function() {
+        	  var chart = d3.select(element[0]);
+              chart.append("div").attr("class", "chart")
+               .selectAll('div')
+               .data(scope.data).enter().append("div")
+               .transition().ease("elastic")
+               .style("width", function(d) { return d.age + "%"; })
+               .text(function(d) { return d.firstName; });
+        	},2000); 
       } 
    };
    return directiveDefinitionObject;
 });
-
-/* function Ctrl($scope) {
-	$scope.myData = [{"id":1,"firstName":"Mantu","lastName":"Singh","age":25},{"id":2,"firstName":"Rishu","lastName":"Singh","age":10},{"id":3,"firstName":"Rakesh","lastName":"Singh","age":15},{"id":4,"firstName":"Subhash","lastName":"Singh","age":30},{"id":5,"firstName":"Amit","lastName":"Singh","age":20},{"id":6,"firstName":"Akash","lastName":"Singh","age":30},{"id":7,"firstName":"Rahul","lastName":"Singh","age":18},{"id":8,"firstName":"Vikash","lastName":"Singh","age":25}]
-} 
- */
 
 </script>
 <body>
